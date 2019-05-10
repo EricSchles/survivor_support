@@ -5,8 +5,6 @@ from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_bootstrap import __version__ as FLASK_BOOTSTRAP_VERSION
 from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
 from markupsafe import escape
-
-from .forms import SignupForm
 from .nav import nav
 
 frontend = Blueprint('frontend', __name__)
