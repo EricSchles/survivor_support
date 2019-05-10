@@ -7,8 +7,6 @@ from flask_nav.elements import Navbar, View, Subgroup, Link, Text, Separator
 from markupsafe import escape
 from .nav import nav
 
-frontend = Blueprint('frontend', __name__)
-
 # We're adding a navbar as well through flask-navbar. In our example, the
 # navbar has an usual amount of Link-Elements, more commonly you will have a
 # lot more View instances.
