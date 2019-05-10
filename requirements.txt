@@ -1,3 +1,5 @@
+flask-bootstrap
+flask-nav
 flask-script
 flask
 flask-sqlalchemy
