@@ -10,7 +10,7 @@ def index():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    keyword = request.form
+    keyword = request.form["search"]
     results = [elem.url
                for elem in URLs.query.filter_by(keyword=keyword).all()]
     return render_template("results.html", results=results)
