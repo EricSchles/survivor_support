@@ -1,27 +1,39 @@
-{# This simple template derives from ``base.html``. See ``base.html`` for
-   more information about template inheritance. #}
-{%- extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
 
-{# Loads some of the macros included with Flask-Bootstrap. We are using the
-   utils module here to automatically render Flask's flashed messages in a
-   bootstrap friendly manner #}
-{% import "bootstrap/utils.html" as utils %}
-
-
-{# Inside the ``content`` is where you should place most of your own stuff.
-   This will keep scripts at the page end and a navbar you add on later
-   intact. #}
-{% block content %}
-  <div class="container">
-    <div class="jumbotron">
-      <h1>Welcome to Flask-Bootstrap</h1>
-      <p>This example application demonstrates some (but not all!) of the
-      features of <a href="http://pythonhosted.org/Flask-Bootstrap">
-      Flask-Bootstrap</a>.</p>
-      <p>
-        <a class="btn btn-lg btn-default" role="button"
-           href="http://pythonhosted.org/Flask-Bootstrap" >Show docs</a>
-      </p>
+<div class="jumbotron text-center">
+  <h1>My First Bootstrap Page</h1>
+  <p>Resize this responsive page to see the effect!</p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>Column 1</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
     </div>
-   </div>
-{%- endblock %}
+    <div class="col-sm-4">
+      <h3>Column 2</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    </div>
+    <div class="col-sm-4">
+      <h3>Column 3</h3>        
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
