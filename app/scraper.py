@@ -2,10 +2,31 @@ from requests import Session
 import lxml.html
 import time
 import random
+from lxml.html import fromstring
+import requests
+import traceback
 
+def get_proxies():
+    url = 'https://free-proxy-list.net/'
+    response = requests.get(url)
+    parser = fromstring(response.text)
+    proxies = set()
+    for i in parser.xpath('//tbody/tr')[:10]:
+        if i.xpath('.//td[7][contains(text(),"yes")]'):
+            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
+            proxies.add(proxy)
+    return proxies
+
+def get_request_with_proxy(url):
+    proxies = get_proxies()
+    for proxy in proxies:
+        try:
+            return requests.get(url, proxies={"http": proxy, "https": proxy})
+        except:
+            pass
+        
 def get_keywords():
-    session = Session()
-    r = session.get("https://www.crisistextline.org/referrals")
+    r = get_request_with_proxy("https://www.crisistextline.org/referrals")
     html = lxml.html.fromstring(r.text)
     return html.xpath("//tr/th")
 
@@ -33,15 +54,26 @@ def get_good_links(html, bad_links):
                 links += link
     links = list(set(links))
     return links
-    
-def get_links(keyword):
-    keywords = get_keywords()
+
+def get_links_with_proxy(keyword):
+    proxies = get_proxies()
+    for proxy in proxies:
+        try:
+            return get_links(keyword, proxy)
+        except:
+            pass
+
+def get_links(keyword, proxy):
     with Session() as session:
         post = session.post(
             "https://www.crisistextline.org/referrals",
-            data={"myInput": keyword}
+            data={"myInput": keyword},
+            proxies={"http": proxy, "https": proxy}
         )
-        r = session.get("https://www.crisistextline.org/referrals")
+        r = session.get(
+            "https://www.crisistextline.org/referrals",
+            proxies={"http": proxy, "https": proxy}
+        )
         html = lxml.html.fromstring(r.text)
         bad_links = get_bad_links(html)
     return get_good_links(html, bad_links)
@@ -51,8 +83,8 @@ def scrape_crisis_text_line():
     data = []
     source = "https://www.crisistextline.org/referrals"
     for keyword in keywords:
-        time.sleep(random.randint(25, 75))
-        links = get_links(keyword)
+        time.sleep(random.randint(300, 875))
+        links = get_links_with_proxy(keyword)
         for link in links:
             data.append((keyword, link, source))
     return data
