@@ -10,10 +10,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+from app import views, models
+from .commands import REPL, ScrapeCrisisTextLine
+
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 manager.add_command("shell", REPL())
 manager.add_command("scrape_ctl", ScrapeCrisisTextLine())
-
-from app import views, models
-from .commands import REPL, ScrapeCrisisTextLine
