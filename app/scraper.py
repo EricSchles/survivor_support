@@ -21,7 +21,7 @@ def get_proxies():
 def get_request_with_proxy(url):
     proxies = get_proxies()
     proxy_pool = cycle(proxies)
-    for _ in range(100):
+    for _ in range(10):
         proxy = next(proxy_pool)
         try:
             return requests.get(url, proxies={"http": proxy, "https": proxy})
@@ -61,7 +61,7 @@ def get_good_links(html, bad_links):
 def get_links_with_proxy(keyword):
     proxies = get_proxies()
     proxy_pool = cycle(proxies)
-    for _ in range(100):
+    for _ in range(10):
         proxy = next(proxy_pool)
         try:
             return get_links(keyword, proxy)
