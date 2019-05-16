@@ -3,6 +3,7 @@ import lxml.html
 import time
 import random
 from lxml.html import fromstring
+from itertools import cycle
 import requests
 import traceback
 
@@ -19,7 +20,9 @@ def get_proxies():
 
 def get_request_with_proxy(url):
     proxies = get_proxies()
-    for proxy in proxies:
+    proxy_pool = cycle(proxies)
+    for _ in range(100):
+        proxy = next(proxy_pool)
         try:
             return requests.get(url, proxies={"http": proxy, "https": proxy})
         except:
@@ -57,7 +60,9 @@ def get_good_links(html, bad_links):
 
 def get_links_with_proxy(keyword):
     proxies = get_proxies()
-    for proxy in proxies:
+    proxy_pool = cycle(proxies)
+    for _ in range(100):
+        proxy = next(proxy_pool)
         try:
             return get_links(keyword, proxy)
         except:
