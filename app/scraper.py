@@ -1,5 +1,6 @@
 from requests import Session
 import lxml.html
+import time
 
 def get_keywords():
     session = Session()
@@ -49,6 +50,7 @@ def scrape_crisis_text_line():
     data = []
     source = "https://www.crisistextline.org/referrals"
     for keyword in keywords:
+        time.sleep(100)
         links = get_links(keyword)
         for link in links:
             data.append((keyword, link, source))
