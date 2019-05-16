@@ -3,33 +3,10 @@ import lxml.html
 import time
 import random
 from lxml.html import fromstring
-from itertools import cycle
 import requests
-import traceback
 
-def get_proxies():
-    url = 'https://free-proxy-list.net/'
-    response = requests.get(url)
-    parser = fromstring(response.text)
-    proxies = set()
-    for i in parser.xpath('//tbody/tr')[:10]:
-        if i.xpath('.//td[7][contains(text(),"yes")]'):
-            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
-            proxies.add(proxy)
-    return proxies
-
-def get_request_with_proxy(url):
-    proxies = get_proxies()
-    proxy_pool = cycle(proxies)
-    for _ in range(10):
-        proxy = next(proxy_pool)
-        try:
-            return requests.get(url, proxies={"http": proxy, "https": proxy})
-        except:
-            pass
-        
 def get_keywords():
-    r = get_request_with_proxy("https://www.crisistextline.org/referrals")
+    r = requests.get("https://www.crisistextline.org/referrals")
     html = lxml.html.fromstring(r.text)
     return html.xpath("//tr/th")
 
@@ -58,38 +35,35 @@ def get_good_links(html, bad_links):
     links = list(set(links))
     return links
 
-def get_links_with_proxy(keyword):
-    proxies = get_proxies()
-    proxy_pool = cycle(proxies)
-    for _ in range(10):
-        proxy = next(proxy_pool)
-        try:
-            return get_links(keyword, proxy)
-        except:
-            pass
-
-def get_links(keyword, proxy):
+def get_links(keyword):
     with Session() as session:
-        post = session.post(
-            "https://www.crisistextline.org/referrals",
-            data={"myInput": keyword},
-            proxies={"http": proxy, "https": proxy}
-        )
-        r = session.get(
-            "https://www.crisistextline.org/referrals",
-            proxies={"http": proxy, "https": proxy}
-        )
+        try:
+            post = session.post(
+                "https://www.crisistextline.org/referrals",
+                data={"myInput": keyword}
+            )
+        except:
+            time.sleep(random.randint(100, 300))
+            post = session.post(
+                "https://www.crisistextline.org/referrals",
+                data={"myInput": keyword}
+            )
+        try:
+            r = session.get("https://www.crisistextline.org/referrals")
+        except:
+            time.sleep(random.randint(100, 300))
+            r = session.get("https://www.crisistextline.org/referrals")
         html = lxml.html.fromstring(r.text)
         bad_links = get_bad_links(html)
     return get_good_links(html, bad_links)
-        
+
 def scrape_crisis_text_line():
     keywords = get_keywords()
+    keywords = [keyword.text.strip() for keyword in keywords[2:]]
     data = []
     source = "https://www.crisistextline.org/referrals"
     for keyword in keywords:
-        time.sleep(random.randint(300, 875))
-        links = get_links_with_proxy(keyword)
+        links = get_links(keyword)
         for link in links:
             data.append((keyword, link, source))
     return data
