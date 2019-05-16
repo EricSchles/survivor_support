@@ -9,10 +9,11 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 #app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://eric_s:1234@localhost/testing"
 db = SQLAlchemy(app)
-migrate = Migrate(app,db)
+migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 manager.add_command("shell", REPL())
+manager.add_command("scrape_ctl", ScrapeCrisisTextLine())
 
 from app import views, models
