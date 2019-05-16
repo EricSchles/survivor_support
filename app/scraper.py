@@ -1,15 +1,15 @@
-from requests_html import HTMLSession
+from requests import Session
 import lxml.html
 
 def get_keywords():
-    session = HTMLSession()
+    session = Session()
     r = session.get("https://www.crisistextline.org/referrals")
     html = lxml.html.fromstring(r.text)
     return html.xpath("//tr/th")
 
 def get_link(html_obj):
     links = []
-    for elem in html_obj.iterlinks:
+    for elem in html_obj.iterlinks():
         links.append(elem[2])
     return links
 
@@ -34,7 +34,7 @@ def get_good_links(html, bad_links):
     
 def get_links(keyword):
     keywords = get_keywords()
-    with HTMLSession() as session:
+    with Session() as session:
         post = session.post(
             "https://www.crisistextline.org/referrals",
             data={"myInput": keyword}
