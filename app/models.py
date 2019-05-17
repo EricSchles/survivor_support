@@ -1,6 +1,7 @@
 from app import db
 
 class URLs(db.Model):
+    __tablename__ = 'urls'
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(1000))
     keyword = db.Column(db.String(400))
