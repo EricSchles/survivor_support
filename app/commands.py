@@ -17,6 +17,7 @@ class ScrapeCrisisTextLine(Command):
         urls = scrape_crisis_text_line()
         for url in urls:
             url_obj = URLs(url[0], url[1], url[2])
+            print(url)
             db.session.add(url_obj)
             db.session.commit()
 
