@@ -2,6 +2,7 @@ from app import app
 from app.models import URLs
 import json
 from flask import render_template, flash, redirect, url_for, request
+import json
 import code
 
 @app.route("/query_backend", methods=["GET", "POST"])
@@ -19,4 +20,4 @@ def search():
 def index():
     # TODO: figure out the ORM way to do this
     keywords = list(set([elem.keyword for elem in URLs.query.all()]))
-    return render_template("index.html", keywords=keywords)
+    return render_template("index.html", keywords=json.dumps(keywords))
