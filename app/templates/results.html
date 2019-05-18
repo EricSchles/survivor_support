@@ -1,12 +1,8 @@
 <!doctype html>
 <html>
    <body>
-      <table>
          {% for url in results %}
-            <tr>
-               <th> {{ url.url }} </th>
-            </tr>
+         	<p><a href="{{ url.url }}">{{url.url}}</a></p>
          {% endfor %}
-      </table>
    </body>
 </html>

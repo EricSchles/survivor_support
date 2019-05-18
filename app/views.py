@@ -2,6 +2,7 @@ from app import app
 from app.models import URLs
 import json
 from flask import render_template, flash, redirect, url_for, request
+import code
 
 @app.route("/query_backend", methods=["GET", "POST"])
 def query_backend():
@@ -11,8 +12,7 @@ def query_backend():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     keyword = request.form["search"]
-    results = [elem.url
-               for elem in URLs.query.filter_by(keyword=keyword).all()]
+    results = URLs.query.filter_by(keyword=keyword).all()
     return render_template("results.html", results=results)
                
 @app.route("/", methods=["GET", "POST"])
